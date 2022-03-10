@@ -4,7 +4,7 @@ package blockchain
 type Transaction struct {
 }
 
-// HashTransactions TODO: imp
-func (b *Block) HashTransactions() []byte {
+// Serialize TODO
+func (tran *Transaction) Serialize() []byte {
 	return []byte{}
 }
