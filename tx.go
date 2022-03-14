@@ -226,8 +226,26 @@ func NewUTXOTransaction(wallet *Wallet, to string, amount int, utxoSet *UTXOSet)
 
 	// builds a list of inputs
 	for txID, outs := range validOutputs {
+		txIDDecode, err := hex.DecodeString(txID)
+		if err != nil {
+			log.Panic(err)
+		}
 
+		for _, out := range outs {
+			input := TXInput{TxID: txIDDecode, VOut: out, Signature: nil, PubKey: wallet.PublicKey}
+			inputs = append(inputs, input)
+		}
 	}
+
+	from := string(wallet.GetAddress())
+	outputs = append(outputs, *NewTXOutput(amount, to))
+	if acc > amount {
+		outputs = append(outputs, *NewTXOutput(acc-amount, from))
+	}
+
+	tx := Transaction{ID: nil, VIn: inputs, VOut: outputs}
+	tx.ID = tx.Hash()
+	utxoSet.Blockchain.SignTransaction(&tx, wallet.PrivateKey)
 
 	return nil
 }

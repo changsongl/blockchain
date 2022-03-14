@@ -11,3 +11,8 @@ type Wallet struct {
 func HashPubKey(pubKey []byte) []byte {
 	return nil
 }
+
+// GetAddress returns wallet address TODO: implement
+func (w Wallet) GetAddress() []byte {
+	return nil
+}
