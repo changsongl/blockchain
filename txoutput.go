@@ -45,3 +45,15 @@ func DeserializeOutputs(data []byte) TXOutputs {
 
 	return outputs
 }
+
+// Serialize serializes TXOutputs
+func (outs TXOutputs) Serialize() []byte {
+	var buff bytes.Buffer
+
+	enc := gob.NewEncoder(&buff)
+	if err := enc.Encode(outs); err != nil {
+		log.Panic(err)
+	}
+
+	return buff.Bytes()
+}
